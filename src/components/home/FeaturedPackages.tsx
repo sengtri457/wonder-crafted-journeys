@@ -5,6 +5,7 @@ import { Clock, MapPin } from "lucide-react";
 
 const packages = [
   {
+    image: "https://images.unsplash.com/photo-1548291686-277ba5bb43f2?auto=format&fit=crop&q=80&w=800",
     title: "Temple Explorer",
     duration: "3 Days",
     location: "Siem Reap",
@@ -12,16 +13,18 @@ const packages = [
     description: "Discover the majestic temples of Angkor with expert guides.",
   },
   {
+    image: "https://images.unsplash.com/photo-1512100356356-de1b84283e18?auto=format&fit=crop&q=80&w=800",
     title: "Island Paradise",
     duration: "5 Days",
-    location: "Koh Rong & Koh Rong Samloem",
+    location: "Koh Rong",
     price: 499,
     description: "Crystal waters, white sand beaches, and tropical sunsets.",
   },
   {
+    image: "https://images.unsplash.com/photo-1543160822-7baa5ba6b8ff?auto=format&fit=crop&q=80&w=800",
     title: "Cultural Journey",
     duration: "7 Days",
-    location: "Phnom Penh, Battambang, Siem Reap",
+    location: "Phnom Penh",
     price: 799,
     description: "A complete immersion into Cambodia's rich heritage and history.",
   },
@@ -32,7 +35,7 @@ const FeaturedPackages = () => {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="section-padding" ref={ref}>
+    <section className="section-padding bg-accent/20" ref={ref}>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -55,37 +58,55 @@ const FeaturedPackages = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.15, duration: 0.6 }}
-              className="glass rounded-2xl p-8 card-hover flex flex-col"
+              className="bg-card rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <Clock size={14} className="text-primary" />
-                  {pkg.duration}
-                </span>
-                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <MapPin size={14} className="text-primary" />
-                  {pkg.location}
-                </span>
-              </div>
-              <h3 className="text-2xl font-serif font-bold text-foreground mb-3">
-                {pkg.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                {pkg.description}
-              </p>
-              <div className="mt-6 flex items-end justify-between">
-                <div>
-                  <span className="text-xs text-muted-foreground">From</span>
-                  <p className="text-3xl font-serif font-bold text-primary">
-                    ${pkg.price}
-                  </p>
+              {/* Image Header */}
+              <div className="h-48 overflow-hidden relative">
+                <img 
+                  src={pkg.image} 
+                  alt={pkg.title} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">
+                   From ${pkg.price}
                 </div>
-                <Link to="/packages" className="btn-gold text-sm !px-6 !py-2">
-                  View Details
+              </div>
+              
+              <div className="p-6">
+                <div className="flex items-center gap-4 mb-3">
+                  <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-accent/50 px-2 py-1 rounded">
+                    <Clock size={12} className="text-primary" />
+                    {pkg.duration}
+                  </span>
+                  <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-accent/50 px-2 py-1 rounded">
+                    <MapPin size={12} className="text-primary" />
+                    {pkg.location}
+                  </span>
+                </div>
+                
+                <h3 className="text-xl font-serif font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                  {pkg.title}
+                </h3>
+                
+                <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-2">
+                  {pkg.description}
+                </p>
+                
+                <Link 
+                  to="/packages" 
+                  className="w-full block text-center btn-outline-gold text-sm !py-2.5 hover:bg-primary hover:text-white"
+                >
+                  View Itinerary
                 </Link>
               </div>
             </motion.div>
           ))}
+        </div>
+        
+        <div className="mt-12 text-center">
+            <Link to="/packages" className="text-primary font-medium hover:underline underline-offset-4">
+               View All Tour Packages →
+            </Link>
         </div>
       </div>
     </section>

@@ -1,105 +1,63 @@
 import Layout from "@/components/layout/Layout";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Clock, MapPin, Check, X } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { packages } from "@/data/packages";
 
-const packages = [
-  {
-    title: "Temple Explorer",
-    duration: "3 Days / 2 Nights",
-    location: "Siem Reap",
-    price: 299,
-    description: "Discover the majestic temples of Angkor with expert guides. Visit Angkor Wat, Bayon, Ta Prohm, and hidden gems.",
-    included: ["Hotel accommodation", "Professional guide", "Temple passes", "Breakfast daily", "Airport transfer"],
-    notIncluded: ["International flights", "Travel insurance", "Personal expenses"],
-  },
-  {
-    title: "Island Paradise",
-    duration: "5 Days / 4 Nights",
-    location: "Koh Rong & Koh Rong Samloem",
-    price: 499,
-    popular: true,
-    description: "Crystal waters, white sand beaches, and tropical sunsets. Snorkeling, diving, and island hopping included.",
-    included: ["Beach resort stay", "Ferry transfers", "Snorkeling gear", "Island hopping tour", "Meals included"],
-    notIncluded: ["Scuba diving certification", "Spa treatments", "International flights"],
-  },
-  {
-    title: "Cultural Journey",
-    duration: "7 Days / 6 Nights",
-    location: "Phnom Penh → Battambang → Siem Reap",
-    price: 799,
-    description: "A complete immersion into Cambodia's rich heritage. Museums, temples, local villages, and culinary experiences.",
-    included: ["All accommodations", "Domestic transport", "All meals", "Expert guides", "Cooking class", "Village visit"],
-    notIncluded: ["International flights", "Travel insurance", "Souvenirs"],
-  },
-];
+import PackageCarousel from "@/components/PackageCarousel";
 
 const Packages = () => {
   return (
     <Layout>
-      <section className="pt-32 section-padding">
-        <div className="max-w-6xl mx-auto">
+      <PackageCarousel />
+      
+      <section className="py-20 section-padding bg-background">
+        <div className="max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
-            <p className="text-primary text-sm tracking-[0.2em] uppercase mb-3">Tour Packages</p>
-            <h1 className="text-4xl md:text-6xl font-serif font-bold text-foreground">
-              Choose Your <span className="text-gradient-gold">Adventure</span>
-            </h1>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground">
+              All Tour Packages
+            </h2>
+            <div className="w-24 h-1 bg-primary mx-auto mt-6"></div>
           </motion.div>
 
-          <div className="space-y-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {packages.map((pkg, i) => (
               <motion.div
-                key={pkg.title}
+                key={pkg.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.15 }}
-                className={`glass rounded-2xl p-8 md:p-10 card-hover relative overflow-hidden ${pkg.popular ? "border-primary/30" : ""}`}
+                className="bg-card glass rounded-xl overflow-hidden shadow-lg border border-border/50 hover:shadow-xl transition-all duration-300 flex flex-col"
               >
-                {pkg.popular && (
-                  <div className="absolute top-4 right-4 gradient-gold-bg text-primary-foreground text-xs font-bold px-4 py-1.5 rounded-full">
-                    Most Popular
-                  </div>
-                )}
-                <div className="grid md:grid-cols-3 gap-8">
-                  <div className="md:col-span-2">
-                    <div className="flex items-center gap-4 mb-3">
-                      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <Clock size={14} className="text-primary" /> {pkg.duration}
-                      </span>
-                      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <MapPin size={14} className="text-primary" /> {pkg.location}
-                      </span>
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-serif font-bold text-foreground mb-3">{pkg.title}</h3>
-                    <p className="text-muted-foreground mb-6">{pkg.description}</p>
-                    <div className="grid sm:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="text-sm font-semibold text-foreground mb-3">Included</h4>
-                        <ul className="space-y-2">
-                          {pkg.included.map((item) => (
-                            <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <Check size={14} className="text-primary shrink-0" /> {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-semibold text-foreground mb-3">Not Included</h4>
-                        <ul className="space-y-2">
-                          {pkg.notIncluded.map((item) => (
-                            <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <X size={14} className="text-destructive shrink-0" /> {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-center justify-center text-center md:border-l md:border-border/30 md:pl-8">
-                    <span className="text-sm text-muted-foreground">From</span>
-                    <p className="text-5xl font-serif font-bold text-gradient-gold my-2">${pkg.price}</p>
-                    <span className="text-xs text-muted-foreground mb-6">per person</span>
-                    <Link to="/contact" className="btn-gold w-full text-center">Book Now</Link>
+                <div className="relative h-64 overflow-hidden group">
+                  <img 
+                    src={pkg.image} 
+                    alt={pkg.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {pkg.popular && (
+                     <div className="absolute top-4 right-4 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                       Most Popular
+                     </div>
+                  )}
+                </div>
+                
+                <div className="p-6 flex flex-col flex-grow text-center">
+                  <h3 className="text-xl font-serif font-bold text-gradient-gold mb-4 h-14 flex items-center justify-center line-clamp-2">
+                    {pkg.title}
+                  </h3>
+                  
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6 line-clamp-3 flex-grow">
+                    {pkg.description}
+                  </p>
+                  
+                  <div className="mt-auto pt-4 border-t border-border/30 w-full flex justify-center">
+                    <Link 
+                      to={`/packages/${pkg.id}`} 
+                      className="inline-flex items-center text-sm font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-widest border border-primary/20 hover:border-primary px-4 py-2 rounded"
+                    >
+                      Read More <ChevronRight size={14} className="ml-1" />
+                    </Link>
                   </div>
                 </div>
               </motion.div>

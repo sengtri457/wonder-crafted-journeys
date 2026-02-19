@@ -1,30 +1,17 @@
 import Layout from "@/components/layout/Layout";
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import angkorWat from "@/assets/angkor-wat.jpg";
-import kohRong from "@/assets/koh-rong.jpg";
-import royalPalace from "@/assets/royal-palace.jpg";
-import kampot from "@/assets/kampot.jpg";
+import { Link } from "react-router-dom";
+import { attractions } from "@/data/attractions";
 
 const categories = ["All", "Temples", "Islands", "Nature", "Cities"];
-
-const allAttractions = [
-  { name: "Angkor Wat", location: "Siem Reap", category: "Temples", image: angkorWat, desc: "The world's largest religious monument and Cambodia's crown jewel." },
-  { name: "Koh Rong", location: "Sihanoukville", category: "Islands", image: kohRong, desc: "Pristine beaches and crystal-clear waters in the Gulf of Thailand." },
-  { name: "Royal Palace", location: "Phnom Penh", category: "Cities", image: royalPalace, desc: "A stunning complex of buildings serving as the royal residence." },
-  { name: "Kampot", location: "Southern Cambodia", category: "Nature", image: kampot, desc: "Riverside charm, pepper plantations, and Bokor National Park." },
-  { name: "Bayon Temple", location: "Siem Reap", category: "Temples", image: angkorWat, desc: "Famous for its serene stone faces carved into massive towers." },
-  { name: "Koh Rong Samloem", location: "Sihanoukville", category: "Islands", image: kohRong, desc: "A quieter island paradise with bioluminescent plankton." },
-  { name: "Battambang", location: "Northwest Cambodia", category: "Cities", image: royalPalace, desc: "Colonial architecture, bamboo trains, and artistic heritage." },
-  { name: "Cardamom Mountains", location: "Southwest Cambodia", category: "Nature", image: kampot, desc: "One of Southeast Asia's largest and most pristine rainforests." },
-];
 
 const Attractions = () => {
   const [filter, setFilter] = useState("All");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
 
-  const filtered = filter === "All" ? allAttractions : allAttractions.filter((a) => a.category === filter);
+  const filtered = filter === "All" ? attractions : attractions.filter((a) => a.category === filter);
 
   return (
     <Layout>
@@ -53,32 +40,48 @@ const Attractions = () => {
           </div>
 
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" ref={ref}>
+          {/* Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" ref={ref}>
             {filtered.map((item, i) => (
               <motion.div
                 key={item.name}
                 layout
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ delay: i * 0.05, duration: 0.4 }}
-                className="group glass rounded-2xl overflow-hidden card-hover"
+                className="group relative aspect-square overflow-hidden shadow-xl"
               >
-                <div className="aspect-[4/3] overflow-hidden">
+                {/* Background Image */}
+                <div className="absolute inset-0">
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                 </div>
-                <div className="p-5">
-                  <span className="text-xs text-primary tracking-wider uppercase">{item.category}</span>
-                  <h3 className="text-lg font-serif font-bold text-foreground mt-1">{item.name}</h3>
-                  <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{item.desc}</p>
-                  <button className="mt-4 text-sm text-primary font-medium hover-gold">
-                    Learn More →
-                  </button>
+
+                {/* Content Overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col justify-end h-full">
+                  <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-4 leading-tight">
+                    {item.name}
+                  </h3>
+                  
+                  <p className="text-white/90 text-sm md:text-base leading-relaxed mb-8 line-clamp-4 font-light">
+                    {item.desc}
+                  </p>
+                  
+                  <div>
+                    <Link 
+                      to={`/attractions/${item.id}`} 
+                      className="inline-block px-8 py-3 border border-white/80 text-white font-medium hover:bg-white hover:text-black transition-all duration-300 uppercase tracking-widest text-sm"
+                    >
+                      More Details
+                    </Link>
+                  </div>
                 </div>
               </motion.div>
             ))}
